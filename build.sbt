@@ -22,5 +22,9 @@ routesGenerator := InjectedRoutesGenerator
 // The default settings for the scalariform code formatting tool
 com.typesafe.sbt.SbtScalariform.scalariformSettings
 
+// Add path and query string binders
 routesImport += "binders.PathBinders._"
 routesImport += "binders.QueryStringBinders._"
+
+// add filters
+libraryDependencies += filters

@@ -22,10 +22,12 @@ class Quiz @Inject() (vocabulary: VocabularyService) extends Controller {
 
   def check(sourceLanguage: Lang, word: String, targetLanguage: Lang, translation: String) = Action { request =>
     val isCorrect = vocabulary.verify(sourceLanguage, word, targetLanguage, translation)
+    val correctScore = request.session.get("correct").map(_.toInt).getOrElse(0)
+    val wrongScore = request.session.get("wrong").map(_.toInt).getOrElse(0)
     if (isCorrect) {
-      Ok
+      Ok.withSession("correct" -> (correctScore + 1).toString, "wrong" -> wrongScore.toString)
     } else {
-      NotAcceptable
+      NotAcceptable.withSession("correct" -> correctScore.toString, "wrong" -> (wrongScore + 1).toString)
     }
   }
 
